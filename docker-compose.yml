@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: insightlink
+      POSTGRES_USER: insightlink
+      POSTGRES_PASSWORD: insightlink
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql://insightlink:insightlink@db:5432/insightlink
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - redis
+
+  web:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

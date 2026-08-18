@@ -10,8 +10,8 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api': {
-        target: 'http://localhost:5000', // <-- Altere para a porta do seu backend
+      "/api": {
+        target: "http://api:5000",// <-- Altere para a porta do seu backend
         changeOrigin: true,
       },
     },
